@@ -1,4 +1,4 @@
-package nl.jordisipkens.lookylooky
+package nl.jordisipkens.lookylooky.features
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
