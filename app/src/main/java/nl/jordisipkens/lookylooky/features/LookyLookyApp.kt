@@ -1,6 +1,5 @@
-package nl.jordisipkens.lookylooky
+package nl.jordisipkens.lookylooky.features
 
-import android.view.View
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -10,9 +9,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import nl.jordisipkens.lookylooky.features.home.DisplayUsers
 import nl.jordisipkens.lookylooky.features.repos.RepositoriesScreen
+import nl.jordisipkens.lookylooky.navigation.ReposScreen
 import nl.jordisipkens.lookylooky.navigation.Screen
 import nl.jordisipkens.lookylooky.ui.theme.LookyLookyTheme
 
@@ -28,13 +29,34 @@ fun LookyLookyApp() {
                 })
             }
         }
-        composable(route = Screen.Repos.route) { backStackEntry ->
-            val user = backStackEntry.arguments?.getString("user")
-            requireNotNull(user) { "User parameter was not set, please set it!" }
-            AppBar(title = "$user repos", backButtonAction = {navController.popBackStack()}) {
-                RepositoriesScreen(user)
+        navigation(route = Screen.Repos.route, startDestination = ReposScreen.Overview.route) {
+            composable(route = ReposScreen.Overview.route) { backStackEntry ->
+                val user = backStackEntry.arguments?.getString("user")
+                // Check if user has been set for this route, otherwise you can't fetch repos
+                requireNotNull(user) { "User argument was not set, make sure to set it!" }
+                AppBar(title = "$user repos", backButtonAction = {navController.popBackStack()}) {
+                    RepositoriesScreen(user)
+                }
+            }
+            composable(route = ReposScreen.Detail.route) { backStackEntry ->
+                val user = backStackEntry.arguments?.getString("user")
+                val repository = backStackEntry.arguments?.getString("repo")
+                // Check if user and repo has been set.
+                requireNotNull(user) { "User argument was not set, make sure to set it."}
+                requireNotNull(repository) { "Repo argument not set, make sure to set it"}
+                AppBar(title = "$user | $repository", backButtonAction = { navController.popBackStack()}) {
+                    Text("Hello")
+                }
+            }
+            composable(route = ReposScreen.RepoEvents.route) { backStackEntry ->
+                val user = backStackEntry.arguments?.getString("user")
+                val repository = backStackEntry.arguments?.getString("repo")
+                // Check if user and repo has been set.
+                requireNotNull(user) { "User argument was not set, make sure to set it."}
+                requireNotNull(repository) { "Repo argument not set, make sure to set it"}
             }
         }
+
     }
 }
 

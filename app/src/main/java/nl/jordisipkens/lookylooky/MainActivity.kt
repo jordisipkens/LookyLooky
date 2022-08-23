@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.*
 import androidx.compose.ui.Modifier
+import nl.jordisipkens.lookylooky.features.LookyLookyApp
 import nl.jordisipkens.lookylooky.ui.theme.LookyLookyTheme
 
 
