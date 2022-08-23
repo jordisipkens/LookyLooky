@@ -9,14 +9,14 @@ sealed class Screen(val route: String) {
 }
 
 // Nested screens (think fragments)
-sealed class ReposScreen(val route: String) {
-    object Overview: ReposScreen("repos/{user}") {
+sealed class RepoScreen(val route: String) {
+    object Overview: RepoScreen("repos/{user}") {
         fun createRoute(user: String) = "$user/repos"
     }
-    object Detail: ReposScreen("repos/{user}/{repo}") {
+    object Detail: RepoScreen("repos/{user}/{repo}") {
         fun createRoute(user: String, repo: String) = "repos/$user/$repo"
     }
-    object RepoEvents: ReposScreen("repos/{user}/{repo}/events") {
+    object RepoEvents: RepoScreen("repos/{user}/{repo}/events") {
         fun createRoute(user: String, repo: String) = "repos/$user/$repo/events"
     }
 }

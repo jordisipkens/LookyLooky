@@ -12,8 +12,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import nl.jordisipkens.lookylooky.features.home.DisplayUsers
-import nl.jordisipkens.lookylooky.features.repos.RepositoriesScreen
-import nl.jordisipkens.lookylooky.navigation.ReposScreen
+import nl.jordisipkens.lookylooky.features.repos.ReposScreen
+import nl.jordisipkens.lookylooky.navigation.RepoScreen
 import nl.jordisipkens.lookylooky.navigation.Screen
 import nl.jordisipkens.lookylooky.ui.theme.LookyLookyTheme
 
@@ -29,16 +29,16 @@ fun LookyLookyApp() {
                 })
             }
         }
-        navigation(route = Screen.Repos.route, startDestination = ReposScreen.Overview.route) {
-            composable(route = ReposScreen.Overview.route) { backStackEntry ->
+        navigation(route = Screen.Repos.route, startDestination = RepoScreen.Overview.route) {
+            composable(route = RepoScreen.Overview.route) { backStackEntry ->
                 val user = backStackEntry.arguments?.getString("user")
                 // Check if user has been set for this route, otherwise you can't fetch repos
                 requireNotNull(user) { "User argument was not set, make sure to set it!" }
                 AppBar(title = "$user repos", backButtonAction = {navController.popBackStack()}) {
-                    RepositoriesScreen(user)
+                    ReposScreen(user)
                 }
             }
-            composable(route = ReposScreen.Detail.route) { backStackEntry ->
+            composable(route = RepoScreen.Detail.route) { backStackEntry ->
                 val user = backStackEntry.arguments?.getString("user")
                 val repository = backStackEntry.arguments?.getString("repo")
                 // Check if user and repo has been set.
@@ -48,7 +48,7 @@ fun LookyLookyApp() {
                     Text("Hello")
                 }
             }
-            composable(route = ReposScreen.RepoEvents.route) { backStackEntry ->
+            composable(route = RepoScreen.RepoEvents.route) { backStackEntry ->
                 val user = backStackEntry.arguments?.getString("user")
                 val repository = backStackEntry.arguments?.getString("repo")
                 // Check if user and repo has been set.
