@@ -42,23 +42,18 @@ private fun NavGraphBuilder.addReposGraph(navController: NavController) {
             // Check if user has been set for this route, otherwise you can't fetch repos
             requireNotNull(user) { "User argument was not set, make sure to set it!" }
             AppBar(title = "$user repos", backButtonAction = {navController.popBackStack()}) {
-                ReposScreen(user) { repo -> navController.navigate(RepoScreen.Detail.createRoute(repo = repo)) }
+                ReposScreen(user) { repo -> navController.navigate(RepoScreen.Detail.createRoute(repo = repo, user = user)) }
             }
         }
         composable(route = RepoScreen.Detail.route) { backStackEntry ->
-            val repository = backStackEntry.arguments?.getString("repo")
-            // Check if user and repo has been set.
-            requireNotNull(repository) { "Repo argument not set, make sure to set it"}
-            AppBar(title = "$repository", backButtonAction = { navController.popBackStack()}) {
-                ReposDetailScreen(repositoryName = repository)
-            }
-        }
-        composable(route = RepoScreen.RepoEvents.route) { backStackEntry ->
             val user = backStackEntry.arguments?.getString("user")
             val repository = backStackEntry.arguments?.getString("repo")
             // Check if user and repo has been set.
-            requireNotNull(user) { "User argument was not set, make sure to set it."}
+            requireNotNull(user) { "User argument was not set, make sure to set it!" }
             requireNotNull(repository) { "Repo argument not set, make sure to set it"}
+            AppBar(title = "$repository", backButtonAction = { navController.popBackStack()}) {
+                ReposDetailScreen(user = user, repositoryName = repository)
+            }
         }
     }
 }

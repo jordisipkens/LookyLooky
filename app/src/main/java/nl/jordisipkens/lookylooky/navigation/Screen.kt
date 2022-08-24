@@ -13,10 +13,7 @@ sealed class RepoScreen(val route: String) {
     object Overview: RepoScreen("repos/{user}") {
         fun createRoute(user: String) = "$user/repos"
     }
-    object Detail: RepoScreen("repos/{repo}") {
-        fun createRoute(repo: String) = "repos/$repo"
-    }
-    object RepoEvents: RepoScreen("repos/{repo}/events") {
-        fun createRoute(repo: String) = "repos/$repo/events"
+    object Detail: RepoScreen("repos/{user}/{repo}") {
+        fun createRoute(repo: String, user: String) = "repos/$user/$repo"
     }
 }

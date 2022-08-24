@@ -4,11 +4,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object NetworkHelper {
-    private val baseUrl = "https://api.github.com/"
+    private const val BASE_URL = "https://api.github.com/"
 
     fun getRetrofitInstance(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(baseUrl)
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

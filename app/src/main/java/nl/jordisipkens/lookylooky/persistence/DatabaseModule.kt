@@ -7,6 +7,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import nl.jordisipkens.lookylooky.persistence.dao.EventDao
 import nl.jordisipkens.lookylooky.persistence.dao.RepoDao
 import nl.jordisipkens.lookylooky.persistence.databases.LookyDatabase
 import javax.inject.Singleton
@@ -15,8 +16,13 @@ import javax.inject.Singleton
 @Module
 class DatabaseModule {
     @Provides
-    fun provideChannelDao(lookyDatabase: LookyDatabase): RepoDao {
+    fun provideRepoDao(lookyDatabase: LookyDatabase): RepoDao {
         return lookyDatabase.repoDao()
+    }
+
+    @Provides
+    fun provideEventDao(lookyDatabase: LookyDatabase): EventDao {
+        return lookyDatabase.eventDao()
     }
 
     @Provides
