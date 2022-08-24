@@ -11,6 +11,9 @@ interface RepoDao {
     @Query("SELECT * FROM repoentity WHERE owner = :user")
     fun getAll(user: String): List<RepoEntity>
 
+    @Query("SELECT * FROM repoentity WHERE name = :name")
+    fun getRepoByName(name: String): List<RepoEntity>
+
     @Insert
     fun insertAll(repos: List<RepoEntity>)
 

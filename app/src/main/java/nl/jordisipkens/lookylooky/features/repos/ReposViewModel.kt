@@ -40,8 +40,11 @@ class ReposViewModel @Inject constructor(
             }
         }
     }
-}
 
+    fun navigateToReposDetail() {
+
+    }
+}
 
 sealed class ReposUiState {
     object Idle: ReposUiState()

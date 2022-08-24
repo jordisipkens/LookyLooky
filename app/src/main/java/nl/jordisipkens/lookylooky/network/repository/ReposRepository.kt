@@ -30,4 +30,15 @@ class ReposRepository @Inject constructor(private val db: LookyDatabase) {
             }
         }
     }
+
+    fun fetchRepoByName(name: String): RepoEntity? {
+        val repoDao = db.repoDao()
+        val repos = repoDao.getRepoByName(name)
+
+        return if (repos.isNotEmpty()) {
+            repos.first()
+        } else {
+            null
+        }
+    }
 }

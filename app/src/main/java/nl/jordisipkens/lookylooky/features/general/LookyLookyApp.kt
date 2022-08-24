@@ -1,6 +1,5 @@
-package nl.jordisipkens.lookylooky.features
+package nl.jordisipkens.lookylooky.features.general
 
-import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
@@ -9,9 +8,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
-import nl.jordisipkens.lookylooky.features.general.AppBar
 import nl.jordisipkens.lookylooky.features.home.HomeScreen
 import nl.jordisipkens.lookylooky.features.repos.ReposScreen
+import nl.jordisipkens.lookylooky.features.repos.detail.ReposDetailScreen
 import nl.jordisipkens.lookylooky.navigation.RepoScreen
 import nl.jordisipkens.lookylooky.navigation.Screen
 import nl.jordisipkens.lookylooky.ui.theme.LookyLookyTheme
@@ -43,17 +42,15 @@ private fun NavGraphBuilder.addReposGraph(navController: NavController) {
             // Check if user has been set for this route, otherwise you can't fetch repos
             requireNotNull(user) { "User argument was not set, make sure to set it!" }
             AppBar(title = "$user repos", backButtonAction = {navController.popBackStack()}) {
-                ReposScreen(user)
+                ReposScreen(user) { repo -> navController.navigate(RepoScreen.Detail.createRoute(repo = repo)) }
             }
         }
         composable(route = RepoScreen.Detail.route) { backStackEntry ->
-            val user = backStackEntry.arguments?.getString("user")
             val repository = backStackEntry.arguments?.getString("repo")
             // Check if user and repo has been set.
-            requireNotNull(user) { "User argument was not set, make sure to set it."}
             requireNotNull(repository) { "Repo argument not set, make sure to set it"}
-            AppBar(title = "$user | $repository", backButtonAction = { navController.popBackStack()}) {
-                Text("Hello")
+            AppBar(title = "$repository", backButtonAction = { navController.popBackStack()}) {
+                ReposDetailScreen(repositoryName = repository)
             }
         }
         composable(route = RepoScreen.RepoEvents.route) { backStackEntry ->
