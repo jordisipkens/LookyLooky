@@ -1,4 +1,4 @@
-package nl.jordisipkens.lookylooky.models
+package nl.jordisipkens.lookylooky.persistence.entities
 
 import com.google.gson.annotations.SerializedName
 import java.util.*
@@ -23,7 +23,7 @@ data class User(
     val followers: Int,
     val following: Int,
     @SerializedName("created_at")
-    val createdAt: Date,
+    val createdAt: String,
     @SerializedName("updated_at")
-    val updatedAt: Date,
+    val updatedAt: String,
 )

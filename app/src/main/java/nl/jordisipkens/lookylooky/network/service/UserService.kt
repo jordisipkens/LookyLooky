@@ -1,6 +1,6 @@
 package nl.jordisipkens.lookylooky.network.service
 
-import nl.jordisipkens.lookylooky.models.User
+import nl.jordisipkens.lookylooky.persistence.entities.User
 import retrofit2.http.GET
 import retrofit2.http.Path
 

@@ -1,4 +1,4 @@
-package nl.jordisipkens.lookylooky.models
+package nl.jordisipkens.lookylooky.persistence.entities
 
 // repository events
 data class Event(

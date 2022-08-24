@@ -1,4 +1,4 @@
-package nl.jordisipkens.lookylooky.models
+package nl.jordisipkens.lookylooky.persistence.entities
 
 import com.google.gson.annotations.SerializedName
 

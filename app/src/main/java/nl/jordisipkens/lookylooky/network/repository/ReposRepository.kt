@@ -1,21 +1,29 @@
 package nl.jordisipkens.lookylooky.network.repository
 
-import nl.jordisipkens.lookylooky.models.Repository
+import nl.jordisipkens.lookylooky.persistence.entities.Repo
 import nl.jordisipkens.lookylooky.network.NetworkHelper
 import nl.jordisipkens.lookylooky.network.service.RepositoryService
+import nl.jordisipkens.lookylooky.persistence.databases.LookyDatabase
+import javax.inject.Inject
 
-class ReposRepository(val user: String) {
+class ReposRepository @Inject constructor(private val db: LookyDatabase) {
 
-    suspend fun fetchRepos(): List<Repository>? {
-        val repo = NetworkHelper.getRetrofitInstance().create(RepositoryService::class.java)
+    suspend fun fetchRepos(user: String): List<Repo>? {
+        val repoDao = db.repoDao()
+        val repos = repoDao.getAll()
 
-        val response = repo.getRepos(user)
+        return repos.ifEmpty {
+            val retro = NetworkHelper.getRetrofitInstance().create(RepositoryService::class.java)
 
-        return if(response.isSuccessful) {
-            response.body()!!
-        } else {
-            null
+            val response = retro.getRepos(user)
+            println("Fetching repositories from GitHub")
+
+            if (response.isSuccessful) {
+                repoDao.insertAll(response.body()!!)
+                response.body()!!
+            } else {
+                null
+            }
         }
-
     }
 }
