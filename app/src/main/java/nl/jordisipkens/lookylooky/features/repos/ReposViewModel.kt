@@ -9,10 +9,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import nl.jordisipkens.lookylooky.features.repos.ReposUiState.*
-import nl.jordisipkens.lookylooky.persistence.entities.Repo
 import nl.jordisipkens.lookylooky.network.repository.ReposRepository
-import nl.jordisipkens.lookylooky.persistence.dao.RepoDao
-import nl.jordisipkens.lookylooky.persistence.dao.RepoDao_Impl
+import nl.jordisipkens.lookylooky.persistence.entities.RepoEntity
 import javax.inject.Inject
 
 @HiltViewModel
@@ -48,6 +46,6 @@ class ReposViewModel @Inject constructor(
 sealed class ReposUiState {
     object Idle: ReposUiState()
     object Loading: ReposUiState()
-    class Loaded(val data: List<Repo>) : ReposUiState()
+    class Loaded(val data: List<RepoEntity>) : ReposUiState()
     class Error(val error: String) : ReposUiState()
 }

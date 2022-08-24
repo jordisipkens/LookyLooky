@@ -13,7 +13,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun DisplayUsers(showRepositories: (user: String) -> Unit) {
+fun HomeScreen(showRepositories: (user: String) -> Unit) {
     val viewModel = HomeViewModel()
 
     Column(

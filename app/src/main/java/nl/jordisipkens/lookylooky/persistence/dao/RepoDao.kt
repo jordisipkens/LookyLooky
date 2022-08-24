@@ -4,19 +4,19 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import nl.jordisipkens.lookylooky.persistence.entities.Repo
+import nl.jordisipkens.lookylooky.persistence.entities.RepoEntity
 
 @Dao
 interface RepoDao {
-    @Query("SELECT * FROM repo")
-    fun getAll(): List<Repo>
+    @Query("SELECT * FROM repoentity WHERE owner = :user")
+    fun getAll(user: String): List<RepoEntity>
 
     @Insert
-    fun insertAll(repos: List<Repo>)
+    fun insertAll(repos: List<RepoEntity>)
 
     @Insert
-    fun insertRepo(repos: Repo)
+    fun insertRepo(repos: RepoEntity)
 
     @Delete
-    fun delete(repo: Repo)
+    fun delete(repo: RepoEntity)
 }

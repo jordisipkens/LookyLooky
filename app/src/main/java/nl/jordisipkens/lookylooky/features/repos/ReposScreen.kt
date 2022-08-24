@@ -1,6 +1,5 @@
 package nl.jordisipkens.lookylooky.features.repos
 
-import android.app.Application
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,8 +11,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import nl.jordisipkens.lookylooky.features.AppBar
-import nl.jordisipkens.lookylooky.persistence.entities.Repo
+import nl.jordisipkens.lookylooky.features.general.AppBar
+import nl.jordisipkens.lookylooky.persistence.entities.RepoEntity
 import nl.jordisipkens.lookylooky.ui.theme.LookyLookyTheme
 
 @Composable
@@ -30,7 +29,7 @@ fun ReposScreen(user: String, viewModel: ReposViewModel = hiltViewModel()) {
 }
 
 @Composable
-fun RepositoriesList(repos: List<Repo>) {
+fun RepositoriesList(repos: List<RepoEntity>) {
     LazyColumn(
         contentPadding = PaddingValues(horizontal = 14.dp, vertical = 12.dp),
         verticalArrangement = Arrangement.SpaceEvenly
