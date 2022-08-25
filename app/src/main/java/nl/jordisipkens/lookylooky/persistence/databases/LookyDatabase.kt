@@ -7,7 +7,7 @@ import nl.jordisipkens.lookylooky.persistence.dao.RepoDao
 import nl.jordisipkens.lookylooky.persistence.entities.EventEntity
 import nl.jordisipkens.lookylooky.persistence.entities.RepoEntity
 
-@Database(entities = [RepoEntity::class, EventEntity::class], version = 9, exportSchema = false)
+@Database(entities = [RepoEntity::class, EventEntity::class], version = 11, exportSchema = false)
 abstract class LookyDatabase: RoomDatabase() {
     abstract fun repoDao(): RepoDao
     abstract fun eventDao(): EventDao

@@ -1,8 +1,6 @@
 package nl.jordisipkens.lookylooky.persistence.entities
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
 import nl.jordisipkens.lookylooky.network.models.Repo
 
 @Entity
@@ -10,7 +8,7 @@ data class RepoEntity @JvmOverloads constructor(
     @PrimaryKey val id: Int,
     val name: String,
     val description: String?,
-    val owner: String, // Only safe name here, nothing else needed.
+    @Embedded val owner: OwnerEntity,
     val homepage: String?,
     val language: String?,
     @ColumnInfo(name="created_at") val createdAt: String,
@@ -24,7 +22,7 @@ fun Repo.toEntity(): RepoEntity {
         id = this.id,
         name = this.name,
         description = this.description,
-        owner = this.owner.login,
+        owner = this.owner.toEntity(),
         homepage = this.homepage,
         language = this.language,
         createdAt = this.createdAt,

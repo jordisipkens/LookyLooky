@@ -20,4 +20,6 @@ data class Repo (
 data class Owner(
     val id: Int,
     val login: String,
+    @SerializedName("html_url")
+    val htmlUrl: String
 )

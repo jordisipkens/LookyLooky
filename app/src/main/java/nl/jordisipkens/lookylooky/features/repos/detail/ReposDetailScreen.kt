@@ -7,22 +7,28 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.text.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import nl.jordisipkens.lookylooky.persistence.entities.EventEntity
 import nl.jordisipkens.lookylooky.persistence.entities.RepoEntity
 import nl.jordisipkens.lookylooky.ui.theme.md_theme_light_background
 import nl.jordisipkens.lookylooky.ui.theme.md_theme_light_onBackground
+import nl.jordisipkens.lookylooky.ui.theme.md_theme_light_primary
 import nl.jordisipkens.lookylooky.ui.theme.md_theme_light_surfaceVariant
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -102,10 +108,11 @@ fun DetailScreen(repo: RepoEntity) {
         CreateRow(label = "Description: ", value = repo.description)
     }
 
-    CreateRow(label = "Owner: ", value = repo.owner)
+    CreateRow(label = "Owner: ", value = repo.owner.login)
+    CreateClickableRow(label ="Owner URL: ", value = repo.owner.url)
 
     repo.homepage?.let {
-        CreateRow(label = "Homepage: ", value = repo.homepage)
+        CreateClickableRow(label = "Homepage: ", value = repo.homepage)
     }
     repo.language?.let {
         CreateRow(label = "Programming language: ", value = repo.language)
@@ -165,8 +172,6 @@ fun EventItem(event: EventEntity) {
     }
 }
 
-
-
 @Composable
 private fun CreateRow(label: String, value: String, horizontalPadding: Dp = 5.dp, verticalPadding: Dp = 2.dp) {
     Row(
@@ -175,5 +180,29 @@ private fun CreateRow(label: String, value: String, horizontalPadding: Dp = 5.dp
     ) {
         Text(label, fontWeight = FontWeight.W600)
         Text(value)
+    }
+}
+
+@Composable
+private fun CreateClickableRow(label: String, value: String, horizontalPadding: Dp = 5.dp, verticalPadding: Dp = 2.dp) {
+    Row(
+        modifier = Modifier.padding(horizontal = horizontalPadding, vertical = verticalPadding),
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
+        Text(label, fontWeight = FontWeight.W600)
+
+        val uriHandler = LocalUriHandler.current
+        val annotatedString = buildAnnotatedString {
+
+            withStyle(style = SpanStyle(color = md_theme_light_primary, textDecoration = TextDecoration.Underline, fontSize = 16.sp)) {
+                append(value)
+            }
+        }
+        ClickableText(text = annotatedString,
+            style = TextStyle.Default,
+            onClick = {
+                uriHandler.openUri(annotatedString.toString())
+            },
+        )
     }
 }
