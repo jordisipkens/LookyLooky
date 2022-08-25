@@ -8,7 +8,7 @@ import nl.jordisipkens.lookylooky.persistence.entities.RepoEntity
 
 @Dao
 interface RepoDao {
-    @Query("SELECT * FROM repoentity WHERE owner = :user")
+    @Query("SELECT * FROM repoentity WHERE owner = :user ORDER BY name COLLATE NOCASE ASC")
     fun getAll(user: String): List<RepoEntity>
 
     @Query("SELECT * FROM repoentity WHERE name = :name")

@@ -1,6 +1,5 @@
 package nl.jordisipkens.lookylooky.features.repos.detail
 
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -11,7 +10,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -26,7 +24,6 @@ import nl.jordisipkens.lookylooky.persistence.entities.RepoEntity
 import nl.jordisipkens.lookylooky.ui.theme.md_theme_light_background
 import nl.jordisipkens.lookylooky.ui.theme.md_theme_light_onBackground
 import nl.jordisipkens.lookylooky.ui.theme.md_theme_light_surfaceVariant
-import nl.jordisipkens.lookylooky.ui.theme.md_theme_light_tertiaryContainer
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -34,7 +31,7 @@ import java.time.format.DateTimeFormatter
 fun ReposDetailScreen(
     repositoryName: String,
     user: String,
-    viewModel: ReposDetailViewModel = hiltViewModel()
+    viewModel: ReposDetailViewModel = hiltViewModel() // Injection
 ) {
     viewModel.setRepositoryName(repositoryName)
     viewModel.setUser(user)

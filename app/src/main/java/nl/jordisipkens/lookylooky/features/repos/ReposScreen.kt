@@ -19,12 +19,14 @@ import nl.jordisipkens.lookylooky.features.general.AppBar
 import nl.jordisipkens.lookylooky.persistence.entities.RepoEntity
 import nl.jordisipkens.lookylooky.ui.theme.*
 
-private lateinit var reposViewModel: ReposViewModel
 @Composable
-fun ReposScreen(user: String, viewModel: ReposViewModel = hiltViewModel(), onItemClicked: (repository: String) -> Unit) {
-    reposViewModel = viewModel
-    reposViewModel.setUser(user)
-    reposViewModel.fetchRepos()
+fun ReposScreen(
+    user: String,
+    viewModel: ReposViewModel = hiltViewModel(), // Injection
+    onItemClicked: (repository: String) -> Unit
+) {
+    viewModel.setUser(user)
+    viewModel.fetchRepos()
 
     when (val state = viewModel.uiState.collectAsState().value) {
         is ReposUiState.Idle -> Text("No repositories found")
@@ -75,6 +77,7 @@ private fun ItemCard(repoEntity: RepoEntity, onItemClicked: (repository: String)
     }
 }
 
+// Preview with some 'debug' values
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {

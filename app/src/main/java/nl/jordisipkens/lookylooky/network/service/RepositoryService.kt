@@ -7,6 +7,6 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface RepositoryService {
-    @GET("users/{user}/repos")
+    @GET("users/{user}/repos?per_page=50")
     suspend fun getRepos(@Path("user") user: String): Response<List<Repo>>
 }

@@ -1,4 +1,4 @@
-package nl.jordisipkens.lookylooky.features.general
+package nl.jordisipkens.lookylooky.features
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import nl.jordisipkens.lookylooky.features.general.AppBar
 import nl.jordisipkens.lookylooky.features.home.HomeScreen
 import nl.jordisipkens.lookylooky.features.repos.ReposScreen
 import nl.jordisipkens.lookylooky.features.repos.detail.ReposDetailScreen

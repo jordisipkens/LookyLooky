@@ -10,9 +10,7 @@ sealed class Screen(val route: String) {
 
 // Nested screens (think fragments)
 sealed class RepoScreen(val route: String) {
-    object Overview: RepoScreen("repos/{user}") {
-        fun createRoute(user: String) = "$user/repos"
-    }
+    object Overview: RepoScreen("repos/{user}")
     object Detail: RepoScreen("repos/{user}/{repo}") {
         fun createRoute(repo: String, user: String) = "repos/$user/$repo"
     }

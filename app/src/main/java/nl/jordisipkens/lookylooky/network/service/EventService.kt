@@ -6,6 +6,6 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface EventService {
-    @GET("repos/{user}/{repo}/events")
+    @GET("repos/{user}/{repo}/events?per_page=50")
     suspend fun getEvents(@Path("user") user: String, @Path("repo") repo: String): Response<List<Event>>
 }
