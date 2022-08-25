@@ -1,21 +1,32 @@
 package nl.jordisipkens.lookylooky.features.repos.detail
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Divider
-import androidx.compose.material3.Text
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.AsyncImage
 import nl.jordisipkens.lookylooky.persistence.entities.EventEntity
 import nl.jordisipkens.lookylooky.persistence.entities.RepoEntity
+import nl.jordisipkens.lookylooky.ui.theme.md_theme_light_background
+import nl.jordisipkens.lookylooky.ui.theme.md_theme_light_onBackground
+import nl.jordisipkens.lookylooky.ui.theme.md_theme_light_surfaceVariant
+import nl.jordisipkens.lookylooky.ui.theme.md_theme_light_tertiaryContainer
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -38,7 +49,7 @@ fun ReposDetailScreen(
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 DetailScreen(state.repo)
-                Divider(modifier = Modifier.padding(vertical = 20.dp))
+                Divider(modifier = Modifier.padding(top = 10.dp))
                 when (val eventState = viewModel.eventUiState.collectAsState().value) {
                     is ReposEventsUiState.Idle -> Text("No events")
                     is ReposEventsUiState.Loading -> Text("Fetching events for the repository")
@@ -52,7 +63,7 @@ fun ReposDetailScreen(
 }
 
 @Composable
-private fun DetailScreen(repo: RepoEntity) {
+fun DetailScreen(repo: RepoEntity) {
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
 
     CreateRow(label = "Name: ", value = repo.name)
@@ -79,22 +90,92 @@ private fun DetailScreen(repo: RepoEntity) {
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun EventsList(events: List<EventEntity>) {
-    Text("Show Column of ${events.count()}")
-    LazyColumn(verticalArrangement = Arrangement.SpaceEvenly) {
-        items(events) { event ->
-            Text(event.type)
-            Text(event.actor)
+fun EventsList(events: List<EventEntity>) {
+    Column {
+        if (events.isEmpty()) {
+            Text("No events found for this repository.")
+        } else {
+
+            LazyColumn(verticalArrangement = Arrangement.SpaceEvenly) {
+
+                stickyHeader {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        Box(
+                            modifier = Modifier.background(md_theme_light_surfaceVariant)
+                                .fillMaxWidth()
+                        ) {
+                            Text(
+                                "Events ",
+                                fontWeight = FontWeight.W600,
+                                modifier = Modifier.padding(
+                                    start = 5.dp,
+                                    bottom = 10.dp,
+                                    top = 5.dp
+                                ).fillMaxWidth(),
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    }
+                }
+
+                items(events) { event ->
+                    Card(
+                        modifier = Modifier
+                            .padding(5.dp)
+                            .fillMaxWidth(),
+                        colors = CardDefaults.cardColors(
+                            containerColor = md_theme_light_background,
+                            contentColor = md_theme_light_onBackground
+                        ),
+                        border = BorderStroke(1.dp, Color.Gray)
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(10.dp)
+                        ) {
+
+                            event.avatarUrl?.let {
+                                AsyncImage(
+                                    model = event.avatarUrl,
+                                    contentDescription = "Avatar",
+                                    modifier = Modifier
+                                        .size(40.dp)
+                                        .clip(CircleShape)
+                                )
+                            }
+
+                            Column(
+                                verticalArrangement = Arrangement.SpaceBetween,
+                                modifier = Modifier.padding(horizontal = 10.dp)
+                            ) {
+                                CreateRow(
+                                    label = "Event: ",
+                                    value = event.type,
+                                    verticalPadding = 0.dp
+                                )
+                                CreateRow(
+                                    label = "By user: ",
+                                    value = event.actor,
+                                    verticalPadding = 0.dp
+                                )
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
 
 
 @Composable
-private fun CreateRow(label: String, value: String) {
+private fun CreateRow(label: String, value: String, horizontalPadding: Dp = 5.dp, verticalPadding: Dp = 2.dp) {
     Row(
-        modifier = Modifier.padding(5.dp),
+        modifier = Modifier.padding(horizontal = horizontalPadding, vertical = verticalPadding),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         Text(label, fontWeight = FontWeight.W600)

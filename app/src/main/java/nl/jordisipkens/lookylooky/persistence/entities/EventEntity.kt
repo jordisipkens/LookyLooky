@@ -10,7 +10,8 @@ data class EventEntity(
     @PrimaryKey val id: String,
     val type: String,
     val actor: String,
-    @ColumnInfo(name="repo_id") val repoId: Int
+    @ColumnInfo(name="repo_id") val repoId: Int,
+    @ColumnInfo(name="avatar_url") val avatarUrl: String?
 )
 
 // Keep in mind that it is in context of the data model, so you're passing the this to a new Entity Object.
@@ -19,6 +20,7 @@ fun Event.toEntity(repoId: Int): EventEntity {
         id = this.id,
         type = this.type,
         actor = this.actor?.login ?: "Deleted",
+        avatarUrl = this.actor?.avatarUrl,
         repoId = repoId
     )
 }

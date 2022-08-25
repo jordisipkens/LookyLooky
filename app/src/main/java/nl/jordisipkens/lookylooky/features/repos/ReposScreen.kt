@@ -53,7 +53,7 @@ private fun ItemCard(repoEntity: RepoEntity, onItemClicked: (repository: String)
     ) {
         Card(
             modifier = Modifier
-                .padding(horizontal = 5.dp, vertical = 5.dp)
+                .padding(5.dp)
                 .fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = md_theme_light_background, contentColor = md_theme_light_onBackground),
             border = BorderStroke(1.dp, Color.Gray),

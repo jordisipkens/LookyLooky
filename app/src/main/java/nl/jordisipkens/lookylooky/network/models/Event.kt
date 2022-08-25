@@ -11,7 +11,6 @@ data class Event(
 data class Actor(
     val id: String,
     val login: String,
-    val url: String,
     @SerializedName("avatar_url")
     val avatarUrl: String?
 )
