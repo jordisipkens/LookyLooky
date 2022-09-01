@@ -1,5 +1,7 @@
 package nl.jordisipkens.lookylooky.features.repos
 
+import android.content.Context
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -8,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import nl.jordisipkens.lookylooky.R
 import nl.jordisipkens.lookylooky.features.repos.ReposUiState.*
 import nl.jordisipkens.lookylooky.network.repository.ReposRepository
 import nl.jordisipkens.lookylooky.persistence.entities.RepoEntity
@@ -35,7 +38,7 @@ class ReposViewModel @Inject constructor(
                 val response = repository.fetchRepos(user)
                 withContext(Dispatchers.Main) {
                     _uiState.value =
-                        response?.let { Loaded(it) } ?: Error("Request has no response")
+                        response?.let { Loaded(it) } ?: Error(R.string.noResponse)
                 }
             }
         }
@@ -50,5 +53,5 @@ sealed class ReposUiState {
     object Idle: ReposUiState()
     object Loading: ReposUiState()
     class Loaded(val data: List<RepoEntity>) : ReposUiState()
-    class Error(val error: String) : ReposUiState()
+    class Error(val errorStringId: Int) : ReposUiState()
 }

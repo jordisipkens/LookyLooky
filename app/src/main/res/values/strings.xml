@@ -1,3 +1,28 @@
 <resources>
     <string name="app_name">LookyLooky</string>
+
+
+    <!-- Homescreen -->
+    <string-array name="usernames">
+        <item>JakeWharton</item>
+        <item>Infinum</item>
+    </string-array>
+    <string name="pickUserLabel">Who\'s repositories would you like to view?</string>
+    <string name="pickUserDescription">
+        This application will enable you to view repositories on GitHub which were created and
+        managed by given users. Besides some metadata about the repositories you will also be
+        able to see all the public actions that have been performed on said repositories.
+    </string>
+
+    <!-- ReposScreen -->
+    <string name="noReposFoundLabel">No repositories found.</string>
+    <string name="loadingReposLabel">%1$d repositories are being loaded…</string>
+
+    <!-- ReposDetailScreen-->
+    <string name="repoNotFoundLabel">No repository found.</string>
+    <string name="eventsNotFoundLabel">No events found.</string>
+    <string name="fetchingEventsLabel">There are no events for this repository.</string>
+
+    <!--    Requests-->
+    <string name="noResponse">Request has no response</string>
 </resources>

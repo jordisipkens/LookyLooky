@@ -1,8 +1,6 @@
 package nl.jordisipkens.lookylooky.features.repos.detail
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -15,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -24,12 +23,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import nl.jordisipkens.lookylooky.R
 import nl.jordisipkens.lookylooky.persistence.entities.EventEntity
 import nl.jordisipkens.lookylooky.persistence.entities.RepoEntity
 import nl.jordisipkens.lookylooky.ui.theme.md_theme_light_background
 import nl.jordisipkens.lookylooky.ui.theme.md_theme_light_onBackground
 import nl.jordisipkens.lookylooky.ui.theme.md_theme_light_primary
-import nl.jordisipkens.lookylooky.ui.theme.md_theme_light_surfaceVariant
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -44,13 +43,17 @@ fun ReposDetailScreen(
     viewModel.getRepoFromCache()
 
     when (val state = viewModel.uiState.collectAsState().value) {
-        is ReposDetailUiState.Empty -> Text("No repo found")
+        is ReposDetailUiState.Empty -> Text(text = stringResource(id = R.string.repoNotFoundLabel))
         is ReposDetailUiState.Loaded -> {
             viewModel.fetchEvents()
 
             when (val eventState = viewModel.eventUiState.collectAsState().value) {
-                is ReposEventsUiState.Idle -> SetupViews(repo = state.repo, infoMessage = "No events found")
-                is ReposEventsUiState.Loading -> SetupViews(repo = state.repo, infoMessage = "Fetching events for the repository")
+                is ReposEventsUiState.Idle -> SetupViews(repo = state.repo, infoMessage = stringResource(
+                    id = R.string.eventsNotFoundLabel
+                ))
+                is ReposEventsUiState.Loading -> SetupViews(repo = state.repo, infoMessage = stringResource(
+                    id = R.string.fetchingEventsLabel
+                ))
                 is ReposEventsUiState.Loaded -> SetupViews(repo = state.repo, events = eventState.data, infoMessage = "There are no events for this reposiroty")
                 is ReposEventsUiState.Error -> SetupViews(repo = state.repo, infoMessage = eventState.error)
             }
@@ -75,11 +78,13 @@ private fun SetupViews(repo: RepoEntity, events: List<EventEntity> = emptyList()
             Text(
                 "Events ",
                 fontWeight = FontWeight.W600,
-                modifier = Modifier.padding(
-                    start = 5.dp,
-                    bottom = 10.dp,
-                    top = 5.dp
-                ).fillMaxWidth(),
+                modifier = Modifier
+                    .padding(
+                        start = 5.dp,
+                        bottom = 10.dp,
+                        top = 5.dp
+                    )
+                    .fillMaxWidth(),
                 textAlign = TextAlign.Center
             )
 
