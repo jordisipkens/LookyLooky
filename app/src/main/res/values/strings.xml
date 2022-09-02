@@ -22,6 +22,18 @@
     <string name="repoNotFoundLabel">No repository found.</string>
     <string name="eventsNotFoundLabel">No events found.</string>
     <string name="fetchingEventsLabel">There are no events for this repository.</string>
+    <string name="eventsLabel">Events</string>
+    <string name="nameLabel">Name: </string>
+    <string name="descriptionLabel">Description: </string>
+    <string name="ownerLabel">Owner: </string>
+    <string name="ownerUrlLabel">Owner URL: </string>
+    <string name="homepageLabel">Homepage: </string>
+    <string name="languageLabel">Programming Language: </string>
+    <string name="createdAtLabel">Created at: </string>
+    <string name="updatedAtLabel">Last updated at: </string>
+    <!-- Events -->
+    <string name="eventLabel">Event: </string>
+    <string name="eventUserLabel">By user: </string>
 
     <!--    Requests-->
     <string name="noResponse">Request has no response</string>

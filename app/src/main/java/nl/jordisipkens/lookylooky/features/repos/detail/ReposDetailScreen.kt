@@ -76,7 +76,7 @@ private fun SetupViews(repo: RepoEntity, events: List<EventEntity> = emptyList()
         item {
             Divider(modifier = Modifier.padding(top = 10.dp))
             Text(
-                "Events ",
+                stringResource(id = R.string.eventsLabel),
                 fontWeight = FontWeight.W600,
                 modifier = Modifier
                     .padding(
@@ -107,27 +107,42 @@ private fun SetupViews(repo: RepoEntity, events: List<EventEntity> = emptyList()
 fun DetailScreen(repo: RepoEntity) {
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
 
-    CreateRow(label = "Name: ", value = repo.name)
+    CreateRow(
+        label = stringResource(id = R.string.nameLabel), 
+        value = repo.name
+    )
 
     repo.description?.let {
-        CreateRow(label = "Description: ", value = repo.description)
+        CreateRow(
+            label = stringResource(id = R.string.descriptionLabel), 
+            value = repo.description)
     }
 
-    CreateRow(label = "Owner: ", value = repo.owner.login)
-    CreateClickableRow(label ="Owner URL: ", value = repo.owner.url)
+    CreateRow(
+        label = stringResource(id = R.string.ownerLabel),
+        value = repo.owner.login)
+    CreateClickableRow(
+        label = stringResource(id = R.string.ownerUrlLabel), 
+        value = repo.owner.url)
 
     repo.homepage?.let {
-        CreateClickableRow(label = "Homepage: ", value = repo.homepage)
+        CreateClickableRow(
+            label = stringResource(id = R.string.homepageLabel),
+            value = repo.homepage)
     }
     repo.language?.let {
-        CreateRow(label = "Programming language: ", value = repo.language)
+        CreateRow(
+            label = stringResource(id = R.string.languageLabel),
+            value = repo.language
+        )
     }
     CreateRow(
-        label = "Created at: ", value =
+        label = stringResource(id = R.string.createdAtLabel),
+        value =
         LocalDate.parse(repo.createdAt, formatter).toString()
     )
     CreateRow(
-        label = "Last updated at: ",
+        label = stringResource(id = R.string.updatedAtLabel),
         value = LocalDate.parse(repo.updatedAt, formatter).toString()
     )
 }
@@ -163,12 +178,12 @@ fun EventItem(event: EventEntity) {
                 modifier = Modifier.padding(horizontal = 10.dp)
             ) {
                 CreateRow(
-                    label = "Event: ",
+                    label = stringResource(id = R.string.eventLabel),
                     value = event.type,
                     verticalPadding = 0.dp
                 )
                 CreateRow(
-                    label = "By user: ",
+                    label = stringResource(id = R.string.eventUserLabel),
                     value = event.actor,
                     verticalPadding = 0.dp
                 )

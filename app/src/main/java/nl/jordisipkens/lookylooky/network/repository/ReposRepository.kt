@@ -17,7 +17,6 @@ class ReposRepository @Inject constructor(private val db: LookyDatabase) {
             val retro = NetworkHelper.getRetrofitInstance().create(RepositoryService::class.java)
 
             val response = retro.getRepos(user)
-            println("Fetching repositories from GitHub")
 
             if (response.isSuccessful) {
                 val repoEntities = response.body()!!.map {
