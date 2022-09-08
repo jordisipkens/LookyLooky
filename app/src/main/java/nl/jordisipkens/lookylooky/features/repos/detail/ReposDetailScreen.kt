@@ -1,17 +1,13 @@
 package nl.jordisipkens.lookylooky.features.repos.detail
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.*
@@ -22,12 +18,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.AsyncImage
 import nl.jordisipkens.lookylooky.R
 import nl.jordisipkens.lookylooky.persistence.entities.EventEntity
 import nl.jordisipkens.lookylooky.persistence.entities.RepoEntity
-import nl.jordisipkens.lookylooky.ui.theme.md_theme_light_background
-import nl.jordisipkens.lookylooky.ui.theme.md_theme_light_onBackground
 import nl.jordisipkens.lookylooky.ui.theme.md_theme_light_primary
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -48,14 +41,14 @@ fun ReposDetailScreen(
             viewModel.fetchEvents()
 
             when (val eventState = viewModel.eventUiState.collectAsState().value) {
-                is ReposEventsUiState.Idle -> SetupViews(repo = state.repo, infoMessage = stringResource(
+                is ReposEventsUiState.Idle -> ReposDetailView(repo = state.repo, infoMessage = stringResource(
                     id = R.string.eventsNotFoundLabel
                 ))
-                is ReposEventsUiState.Loading -> SetupViews(repo = state.repo, infoMessage = stringResource(
+                is ReposEventsUiState.Loading -> ReposDetailView(repo = state.repo, infoMessage = stringResource(
                     id = R.string.fetchingEventsLabel
                 ))
-                is ReposEventsUiState.Loaded -> SetupViews(repo = state.repo, events = eventState.data, infoMessage = "There are no events for this reposiroty")
-                is ReposEventsUiState.Error -> SetupViews(repo = state.repo, infoMessage = eventState.error)
+                is ReposEventsUiState.Loaded -> ReposDetailView(repo = state.repo, events = eventState.data, infoMessage = "There are no events for this reposiroty")
+                is ReposEventsUiState.Error -> ReposDetailView(repo = state.repo, infoMessage = eventState.error)
             }
 
 
@@ -65,7 +58,7 @@ fun ReposDetailScreen(
 }
 
 @Composable
-private fun SetupViews(repo: RepoEntity, events: List<EventEntity> = emptyList(), infoMessage: String) {
+private fun ReposDetailView(repo: RepoEntity, events: List<EventEntity> = emptyList(), infoMessage: String) {
     LazyColumn(
         modifier = Modifier.padding(5.dp),
         verticalArrangement = Arrangement.SpaceBetween
@@ -107,93 +100,49 @@ private fun SetupViews(repo: RepoEntity, events: List<EventEntity> = emptyList()
 fun DetailScreen(repo: RepoEntity) {
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
 
-    CreateRow(
+    RowWithLabel(
         label = stringResource(id = R.string.nameLabel), 
         value = repo.name
     )
 
     repo.description?.let {
-        CreateRow(
+        RowWithLabel(
             label = stringResource(id = R.string.descriptionLabel), 
             value = repo.description)
     }
 
-    CreateRow(
+    RowWithLabel(
         label = stringResource(id = R.string.ownerLabel),
         value = repo.owner.login)
-    CreateClickableRow(
+    ClickableRowWithLabel(
         label = stringResource(id = R.string.ownerUrlLabel), 
         value = repo.owner.url)
 
     repo.homepage?.let {
-        CreateClickableRow(
+        ClickableRowWithLabel(
             label = stringResource(id = R.string.homepageLabel),
             value = repo.homepage)
     }
     repo.language?.let {
-        CreateRow(
+        RowWithLabel(
             label = stringResource(id = R.string.languageLabel),
             value = repo.language
         )
     }
-    CreateRow(
+    RowWithLabel(
         label = stringResource(id = R.string.createdAtLabel),
         value =
         LocalDate.parse(repo.createdAt, formatter).toString()
     )
-    CreateRow(
+    RowWithLabel(
         label = stringResource(id = R.string.updatedAtLabel),
         value = LocalDate.parse(repo.updatedAt, formatter).toString()
     )
 }
 
-@Composable
-fun EventItem(event: EventEntity) {
-    Card(
-        modifier = Modifier
-            .padding(5.dp)
-            .fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = md_theme_light_background,
-            contentColor = md_theme_light_onBackground
-        ),
-        border = BorderStroke(1.dp, Color.Gray)
-    ) {
-        Row(
-            modifier = Modifier.padding(10.dp)
-        ) {
-
-            event.avatarUrl?.let {
-                AsyncImage(
-                    model = event.avatarUrl,
-                    contentDescription = "Avatar",
-                    modifier = Modifier
-                        .size(40.dp)
-                        .clip(CircleShape)
-                )
-            }
-
-            Column(
-                verticalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.padding(horizontal = 10.dp)
-            ) {
-                CreateRow(
-                    label = stringResource(id = R.string.eventLabel),
-                    value = event.type,
-                    verticalPadding = 0.dp
-                )
-                CreateRow(
-                    label = stringResource(id = R.string.eventUserLabel),
-                    value = event.actor,
-                    verticalPadding = 0.dp
-                )
-            }
-        }
-    }
-}
 
 @Composable
-private fun CreateRow(label: String, value: String, horizontalPadding: Dp = 5.dp, verticalPadding: Dp = 2.dp) {
+fun RowWithLabel(label: String, value: String, horizontalPadding: Dp = 5.dp, verticalPadding: Dp = 2.dp) {
     Row(
         modifier = Modifier.padding(horizontal = horizontalPadding, vertical = verticalPadding),
         horizontalArrangement = Arrangement.SpaceEvenly
@@ -204,7 +153,7 @@ private fun CreateRow(label: String, value: String, horizontalPadding: Dp = 5.dp
 }
 
 @Composable
-private fun CreateClickableRow(label: String, value: String, horizontalPadding: Dp = 5.dp, verticalPadding: Dp = 2.dp) {
+fun ClickableRowWithLabel(label: String, value: String, horizontalPadding: Dp = 5.dp, verticalPadding: Dp = 2.dp) {
     Row(
         modifier = Modifier.padding(horizontal = horizontalPadding, vertical = verticalPadding),
         horizontalArrangement = Arrangement.SpaceEvenly

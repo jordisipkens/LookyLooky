@@ -1,6 +1,5 @@
 package nl.jordisipkens.lookylooky.features.repos.detail
 
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel

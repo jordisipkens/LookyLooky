@@ -4,10 +4,13 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -17,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.AsyncImage
 import nl.jordisipkens.lookylooky.R
 import nl.jordisipkens.lookylooky.features.general.AppBar
 import nl.jordisipkens.lookylooky.persistence.entities.RepoEntity
@@ -56,26 +60,55 @@ private fun ItemCard(repoEntity: RepoEntity, onItemClicked: (repository: String)
     Column(
         modifier = Modifier.padding(10.dp)
     ) {
-        Card(
+        ElevatedCard(
             modifier = Modifier
                 .padding(5.dp)
                 .fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = md_theme_light_background, contentColor = md_theme_light_onBackground),
-            border = BorderStroke(1.dp, Color.Gray),
-            onClick = { onItemClicked(repoEntity.name) }
+            onClick = { onItemClicked(repoEntity.name) },
+            shape = MaterialTheme.shapes.medium,
+//            colors = CardDefaults.cardColors(containerColor = md_theme_dark_surface)
         ) {
-            Text(
-                repoEntity.name,
-                fontSize = 25.sp,
-                fontWeight = FontWeight.W700,
-                modifier = Modifier.padding(start = 10.dp, top = 5.dp, end = 5.dp, bottom = 0.dp))
-            repoEntity.description?.let { Text(
-                it,
-                color = Color.Gray, 
-                modifier = Modifier.padding(start = 10.dp, top = 0.dp, end = 10.dp, bottom = 5.dp),
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis
-            ) }
+            Row(
+                modifier = Modifier.padding(10.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                repoEntity.owner.avatarUrl.let {
+                    AsyncImage(
+                        model = repoEntity.owner.avatarUrl,
+                        contentDescription = "Avatar",
+                        modifier = Modifier
+                            .size(40.dp)
+                            .clip(CircleShape)
+                    )
+                }
+                Column {
+                    Text(
+                        repoEntity.name,
+                        fontSize = 25.sp,
+                        fontWeight = FontWeight.W700,
+                        modifier = Modifier.padding(
+                            start = 10.dp,
+                            top = 5.dp,
+                            end = 5.dp,
+                            bottom = 0.dp
+                        )
+                    )
+                    repoEntity.description?.let {
+                        Text(
+                            it,
+                            color = Color.Gray,
+                            modifier = Modifier.padding(
+                                start = 10.dp,
+                                top = 0.dp,
+                                end = 10.dp,
+                                bottom = 5.dp
+                            ),
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+                }
+            }
         }
     }
 }
